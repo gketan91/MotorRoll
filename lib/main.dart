@@ -3,15 +3,33 @@ import 'package:motorroll/ViewSocks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:motorroll/login.dart';
+import 'package:motorroll/themes/app_theme.dart';
+import 'package:motorroll/themes/theme_model.dart';
+import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
+
+    ChangeNotifierProvider(
+      create: (_) => ThemeModel(),
+      child: Consumer<ThemeModel>(
+        builder: (context, ThemeModel themeNotifier, child) {
+          return MaterialApp(
+            home: LoginPage(),
+            theme: themeNotifier.isDark ? AppTheme.dark : AppTheme.light,
+            debugShowCheckedModeBanner: false,
+          );
+        }
+      )
     )
+    // MaterialApp(
+    //   debugShowCheckedModeBanner: false,
+    //   home: MyHomePage(),
+    // )
   );
 }
 
@@ -50,13 +68,15 @@ class MyHomePage extends StatelessWidget {
                     children: <Widget>[
                       Expanded(
                         flex: 4,
-                        child: FadeInUp(duration: Duration(milliseconds: 1200), child: Text('Best Online \nSocks Collection', style: TextStyle(
-                          fontSize: 25,
+                        child: FadeInUp(duration: Duration(milliseconds: 1200), child: Text('Wellcome! \nFind the way to ride', style: TextStyle(
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Color.fromRGBO(97, 90, 90, 1)
+                          color: Color.fromRGBO(97, 90, 90, 1),
+
                         )),),
                       ),
                       Expanded(
+                        
                         flex: 3,
                         child: FadeInUp(duration: Duration(milliseconds: 1300), child: Image.asset('assets/header-socks.png')),
                       ),
@@ -83,6 +103,12 @@ class MyHomePage extends StatelessWidget {
                   color: Colors.white
                 ),
                 child: TextField(
+                  onTap: (){
+                    
+                    print('Search button pressed!');
+                    Navigator.push(context,MaterialPageRoute(builder: (context) => SfDateRangePicker()));
+                    
+                  },
                   decoration: InputDecoration(
                     suffixIcon: Icon(Icons.search, color: Colors.black, size: 20.0,),
                     border: InputBorder.none,
@@ -114,7 +140,7 @@ class MyHomePage extends StatelessWidget {
                               padding: EdgeInsets.all(10),
                               onPressed: () {},
                               color: Color.fromRGBO(251, 53, 105, 0.1),
-                              child: Text('Adult', style: TextStyle(
+                              child: Text('Scooty', style: TextStyle(
                                 color: Color.fromRGBO(251, 53, 105, 1),
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold
@@ -128,7 +154,7 @@ class MyHomePage extends StatelessWidget {
                               padding: EdgeInsets.all(10),
                               onPressed: () {},
                               color: Color.fromRGBO(97, 90, 90, 0.1),
-                              child: Text('Children', style: TextStyle(
+                              child: Text('Bike', style: TextStyle(
                                 color: Color.fromRGBO(97, 90, 90, 0.6),
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold
@@ -208,3 +234,4 @@ class MyHomePage extends StatelessWidget {
     );
   }
 }
+
